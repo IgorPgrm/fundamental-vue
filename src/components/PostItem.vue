@@ -1,11 +1,21 @@
 <template>
   <div class="post">
-    <div><strong>Название:</strong>{{ post.title }}</div>
-    <div><strong>Описание:</strong>{{ post.body }}</div>
+    <div>
+      <div><strong>Название:</strong>{{ post.title }}</div>
+      <div><strong>Описание:</strong>{{ post.body }}</div>
+    </div>
+    <div class="post__buttons">
+      <my-button class="btn">Удалить</my-button>
+    </div>
   </div>
 </template>
 <script>
+import MyButton from "@/components/UI/MyButton"
+
 export default {
+  components: {
+    MyButton
+  },
   props: {
     post:  {
       type: Object,
@@ -19,5 +29,8 @@ export default {
   padding: 15 px;
   margin-top: 15px;
   border: 2px solid teal;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

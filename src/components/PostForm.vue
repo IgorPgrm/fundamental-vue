@@ -11,13 +11,15 @@
     class="new-post-input" 
     type="text" placeholder="Описание">
 
-    <button type="submit" 
+    <my-button type="submit" 
     class="btn btn-create-post btn-success" 
-    @click="createPost">Создать</button>
+    @click="createPost">Создать</my-button>
   </form>
 </template>
 <script>
+import MyButton from "@/components/UI/MyButton"
 export default {
+  components: { MyButton },
   data(){
     return {
       post: {
@@ -41,14 +43,6 @@ form {
   display: flex;
   flex-direction: column;
 
-}
-.btn-create-post {
-  margin-top: 15px;
-  align-self: flex-end;
-  padding: 15px;
-  background: none;
-  color: teal;
-  border: 1px solid teal;
 }
 
 .new-post-input {
