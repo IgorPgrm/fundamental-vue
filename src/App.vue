@@ -2,6 +2,7 @@
   <div class="app">
     <h1>Публикации</h1>
     <my-button @click="showDialog">Создать пост</my-button>
+    <my-button @click="fetchPosts">Получить посты</my-button>
     <my-dialog v-model:show="dialogVisible">
       <post-form
         @create="createPost"
@@ -16,6 +17,7 @@
 <script>
 import PostForm from "@/components/PostForm"
 import PostList from "@/components/PostList"
+import axios from 'axios'
 
 export default {
   components: {
@@ -23,11 +25,7 @@ export default {
   },
   data(){
     return {
-      posts: [
-        { id: 1, title: 'Frist-title', body: 'First description'},
-        { id: 2, title: 'Second-title', body:  'description text'},
-        { id: 3, title: 'Thrid', body: 'Lorem ipsum'},
-      ],
+      posts: [],
       dialogVisible: false,
     }
   },
@@ -41,6 +39,14 @@ export default {
     },
     showDialog(){
       this.dialogVisible = true;
+    },
+    async fetchPosts(){
+      try {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=15');
+        this.posts = response.data;
+      } catch(e) {
+        alert("Ошибка:");
+      }
     }
   }
   
