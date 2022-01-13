@@ -25,10 +25,13 @@
     <div v-else class="loading-bar">
       Загрузка...
     </div>
-    <my-page-wrapper
+    <div ref="observer" class="observer">
+
+    </div>
+    <!-- <my-page-wrapper
     :totalPages="this.totalPages"
     v-model="page"
-    />
+    /> -->
   </div>
 </template>
 <script>
@@ -67,9 +70,6 @@ export default {
     showDialog(){
       this.dialogVisible = true;
     },
-    changePage(pageNumber){
-      this.page = pageNumber
-    },
     async fetchPosts(){
       try {
         this.isPostLoading = true;
@@ -86,10 +86,38 @@ export default {
       } finally {
         this.isPostLoading = false;
       }
+    },
+    async loadMorePosts(){
+      this.page += 1;
+      try {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+          params: {
+            _page: this.page,
+            _limit: this.limit,
+          }
+        });
+        this.posts = [...this.posts, ...response.data];
+        this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit);
+      } catch(e) {
+        alert("Ошибка:");
+      }
     }
   },
+  
   mounted: function() {
     this.fetchPosts();
+    const options = {
+      rootMargin: '0px',
+      threshold: 1.0
+    }
+    const callback = (entries, observer) => {
+    /* Content excerpted, show below */
+    if (entries[0].isIntersecting && this.page < this.totalPages){
+      this.loadMorePosts();
+    }
+    };
+    const observer = new IntersectionObserver(callback, options);
+    observer.observe(this.$refs.observer);
   },
   computed: {
     sortedPosts(){
@@ -102,9 +130,9 @@ export default {
     }
   },
   watch: {
-    page(){
-      this.fetchPosts()
-    }
+    // page(){
+    //   this.fetchPosts()
+    // }
   }
 }
 </script>
@@ -124,4 +152,8 @@ export default {
   justify-content: space-between;
 }
 
+.observer {
+  height: 30px;
+  background: green;
+}
 </style>
