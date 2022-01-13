@@ -25,16 +25,10 @@
     <div v-else class="loading-bar">
       Загрузка...
     </div>
-    <div class="page__wrapper">
-      <div
-      class="page"
-      :class="{'current-page': pageNumber === page }"
-      @click="changePage(pageNumber)"
-      v-for="pageNumber in totalPages"
-      :key="pageNumber">
-        {{ pageNumber }}
-      </div>
-    </div>
+    <my-page-wrapper
+    :totalPages="this.totalPages"
+    v-model="page"
+    />
   </div>
 </template>
 <script>
@@ -130,18 +124,4 @@ export default {
   justify-content: space-between;
 }
 
-.page__wrapper{
-  display: flex;
-  margin-top: 15px;
-}
-
-.page {
-  border: 1px solid black;
-  padding: 10px;
-  margin-right: 5px;
-}
-
-.current-page{
-  border: 2px solid teal;
-}
 </style>
