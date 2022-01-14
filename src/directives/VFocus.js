@@ -1,6 +1,6 @@
 export default {
-  mouted(el){
-    el.focus();
+  mounted(el){
+    el.focus()
   },
   name: 'focus'
 }
