@@ -1,8 +1,8 @@
 <template>
   <div class="post">
     <div>
-      <div><strong>Название:</strong>{{ post.title }}</div>
-      <div><strong>Описание:</strong>{{ post.body }}</div>
+      <div><strong>Название:</strong> {{ post.title }}</div>
+      <div><strong>Описание:</strong> {{ post.body }}</div>
     </div>
     <div class="post__buttons">
        <my-button 
@@ -30,6 +30,7 @@ export default {
 </script>
 <style scoped>
 .post {
+  height: 65px;
   padding: 15 px;
   margin-top: 15px;
   border: 2px solid teal;
@@ -40,5 +41,9 @@ export default {
 
 .post__buttons {
   display: flex;
+}
+
+.btn {
+  margin-right: 5px;
 }
 </style>

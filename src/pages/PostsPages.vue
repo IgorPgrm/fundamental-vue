@@ -25,7 +25,7 @@
     <div v-else class="loading-bar">
       Загрузка...
     </div>
-    <div ref="observer" class="observer">
+    <div v-intersection="loadMorePosts" class="observer">
 
     </div>
     <!-- <my-page-wrapper
@@ -106,18 +106,6 @@ export default {
   
   mounted: function() {
     this.fetchPosts();
-    const options = {
-      rootMargin: '0px',
-      threshold: 1.0
-    }
-    const callback = (entries, observer) => {
-    /* Content excerpted, show below */
-    if (entries[0].isIntersecting && this.page < this.totalPages){
-      this.loadMorePosts();
-    }
-    };
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(this.$refs.observer);
   },
   computed: {
     sortedPosts(){
@@ -144,6 +132,5 @@ export default {
 
 .observer {
   height: 30px;
-  background: green;
 }
 </style>
