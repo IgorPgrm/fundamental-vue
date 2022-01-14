@@ -1278,7 +1278,7 @@
   "resolved" "https://registry.npmjs.org/@vue/cli-overlay/-/cli-overlay-4.5.15.tgz"
   "version" "4.5.15"
 
-"@vue/cli-plugin-babel@~4.5.0":
+"@vue/cli-plugin-babel@^4.5.15":
   "integrity" "sha512-hBLrwYfFkHldEe34op/YNgPhpOWI5n5DB2Qt9I/1Epeif4M4iFaayrgjvOR9AVM6WbD3Yx7WCFszYpWrQZpBzQ=="
   "resolved" "https://registry.npmjs.org/@vue/cli-plugin-babel/-/cli-plugin-babel-4.5.15.tgz"
   "version" "4.5.15"
