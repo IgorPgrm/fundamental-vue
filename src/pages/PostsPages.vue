@@ -1,5 +1,5 @@
 <template>
-  <div class="post">
+  <div class="posts">
     <h1>Публикации</h1>
     <my-input
     v-model="searchQuery"
