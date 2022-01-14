@@ -4,6 +4,7 @@
     <div class="navbar__btns">
       <my-button @click="$router.push('/posts')">Публикации</my-button>
       <my-button @click="$router.push('/store')">Store</my-button>
+      <my-button @click="$router.push('/comp')">Composition</my-button>
       <my-button
       @click="$router.push('/about')"
       style="margin-left: 15px;">О приложении</my-button>
@@ -26,5 +27,6 @@ export default {
 
 .navbar__btns {
   margin-left: auto;
+  align-items: right;
 }
 </style>
