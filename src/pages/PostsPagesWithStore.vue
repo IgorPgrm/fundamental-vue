@@ -1,20 +1,17 @@
 <template>
   <div class="posts">
-    <h1>Пользователь {{ $store.state.isAuth ? 'авторизован' : 'не авторизован'}}</h1>
-    <h1>{{ $store.getters.doubleLikes }}</h1>
-    <div>
-      <my-button @click="$store.commit('incrementLikes')">Like</my-button>
-      <my-button @click="$store.commit('decrementLikes')">Dislike</my-button>
-    </div>
     <h1>Публикации</h1>
     <my-input
+    :model-value="searchQuery"
+    @update:model-value="setSearchQuery"
     v-model="searchQuery"
     placeholder="Поиск..."
     />
     <div class="app__btns">
       <my-button @click="showDialog">Создать пост</my-button>
       <my-select
-      v-model="selectedSort"
+      :model-value="selectedSort"
+      @update:model-value="setSelectedSort"
       :options="sortOptions"
       />
     </div>
@@ -31,9 +28,7 @@
     <div v-else class="loading-bar">
       Загрузка...
     </div>
-    <div v-intersection="loadMorePosts" class="observer">
-
-    </div>
+    <div v-intersection="loadMorePosts" class="observer"></div>
     <!-- <my-page-wrapper
     :totalPages="this.totalPages"
     v-model="page"
@@ -43,7 +38,7 @@
 <script>
 import PostForm from "@/components/PostForm"
 import PostList from "@/components/PostList"
-import axios from 'axios'
+import {mapState, mapGetters, mapActions, mapMutations} from 'vuex'
 
 export default {
   components: {
@@ -51,21 +46,19 @@ export default {
   },
   data(){
     return {
-      posts: [],
       dialogVisible: false,
-      isPostLoading: false,
-      selectedSort: '',
-      searchQuery: '',
-      page: 1,
-      limit: 10,
-      totalPages: 0,
-      sortOptions: [
-        { value: 'title', name: 'По названию'},
-        { value: 'body', name: 'По содержимому'}
-      ]
     }
   },
   methods: {
+    ...mapMutations({
+      setPage: 'post/setPage',
+      setSearchQuery: 'post/setSearchQuery',
+      setSelectedSort: 'post/setSelectedSort',
+    }),
+    ...mapActions({
+      loadMorePosts: 'post/loadMorePosts',
+      fetchPosts: 'post/fetchPosts'
+    }),
     createPost(post){
       this.posts.push(post);
       this.dialogVisible = false;
@@ -76,52 +69,26 @@ export default {
     showDialog(){
       this.dialogVisible = true;
     },
-    async fetchPosts(){
-      try {
-        this.isPostLoading = true;
-        const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
-          params: {
-            _page: this.page,
-            _limit: this.limit,
-          }
-        });
-        this.posts = response.data;
-        this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit);
-      } catch(e) {
-        alert("Ошибка:");
-      } finally {
-        this.isPostLoading = false;
-      }
-    },
-    async loadMorePosts(){
-      this.page += 1;
-      try {
-        const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
-          params: {
-            _page: this.page,
-            _limit: this.limit,
-          }
-        });
-        this.posts = [...this.posts, ...response.data];
-        this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit);
-      } catch(e) {
-        alert("Ошибка:");
-      }
-    }
   },
   
   mounted: function() {
     this.fetchPosts();
   },
   computed: {
-    sortedPosts(){
-      return [...this.posts].sort((post1, post2) => {
-        return post1[this.selectedSort]?.localeCompare(post2[this.selectedSort])
-      })
-    },
-    sortedAndSearchedPosts(){
-      return this.sortedPosts.filter(post => post.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
-    }
+    ...mapState({
+    posts: state => state.post.posts,
+    isPostLoading: state => state.post.isPostLoading,
+    selectedSort: state => state.post.selectedSort,
+    searchQuery: state => state.post.searchQuery,
+    page: state => state.post.page,
+    limit: state => state.post.limit,
+    totalPages: state => state.post.totalPages,
+    sortOptions: state => state.post.sortOptions
+    }),
+    ...mapGetters({
+      sortedPosts: 'post/sortedPosts',
+      sortedAndSearchedPosts: 'post/sortedAndSearchedPosts'
+    })
   },
   watch: {
     // page(){
