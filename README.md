@@ -1,5 +1,7 @@
 # fundamental-vue
 
+Фундаментальный Vue, видео урок : https://www.youtube.com/watch?v=XzLuMtDelGk
+
 ## Project setup
 ```
 yarn install
